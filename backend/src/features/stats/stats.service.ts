@@ -1,12 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { GamesRepository } from '../game/repositories/games.repository';
 import { CurrentUser } from '../auth/strategies/jwt.strategy';
+import { GameService } from '../game/game.service';
 
 @Injectable()
 export class StatsService {
-  constructor(private readonly gamesRepository: GamesRepository) {}
+  constructor(private readonly gamesService: GameService) {}
 
   async getPastResults(user: CurrentUser) {
-    return this.gamesRepository.findFinishedGamesByUserId(user.sub);
+    return this.gamesService.getPastResults(user);
+  }
+
+  async getGameResult(gameId: string, user: CurrentUser) {
+    return this.gamesService.getGameResult(gameId, user);
   }
 }

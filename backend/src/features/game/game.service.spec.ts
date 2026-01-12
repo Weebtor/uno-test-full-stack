@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
-
 import { ConfigService } from '@nestjs/config';
 import { DRIZZLE_MAIN } from 'src/database/drizzle.constants';
 import { CardsService } from '../cards/cards.service';
 import { GameService } from './game.service';
 import { GamesRepository } from './repositories/games.repository';
 import { CurrentUser } from '../auth/strategies/jwt.strategy';
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
+
 const hidden = (id: string, imageId = 'img1') => ({
   id,
   imageId,
@@ -41,6 +41,8 @@ describe('GameService', () => {
     findCurrentGame: jest.fn(),
     registerMove: jest.fn(),
     registerFinalMove: jest.fn(),
+    findFinishedGamesByUserId: jest.fn(),
+    findFinishedGame: jest.fn(),
   };
 
   const mockConfigService = {
@@ -237,6 +239,7 @@ describe('GameService', () => {
     );
     expect(result.cards.every((c) => c.status === 'match')).toBe(true);
   });
+
   it('matches cards and registers successful move', async () => {
     const game = { id: 'g1' };
     const revealedCard = revealed('c1', 'img1');
@@ -268,5 +271,43 @@ describe('GameService', () => {
       expect.anything(),
     );
     expect(result.cards.every((c) => c.status === 'match')).toBe(true);
+  });
+
+  it('should return finished games by user id', async () => {
+    const user = { sub: 'user-1' } as CurrentUser;
+
+    const expectedGames = [{ id: 'game-1' }, { id: 'game-2' }];
+    mockGamesRepository.findFinishedGamesByUserId.mockResolvedValue(
+      expectedGames,
+    );
+
+    const result = await service.getPastResults(user);
+
+    expect(mockGamesRepository.findFinishedGamesByUserId).toHaveBeenCalledWith(
+      user.sub,
+    );
+    expect(result).toEqual(expectedGames);
+  });
+
+  it('should throw NotFoundException if game does not exist', async () => {
+    const user = { sub: 'user-1' } as CurrentUser;
+    const gameId = 'game-404';
+
+    mockGamesRepository.findFinishedGame.mockResolvedValue([]);
+
+    mockDb.transaction.mockImplementation(async (callback) => {
+      const tx = {};
+      return callback(tx);
+    });
+
+    await expect(service.getGameResult(gameId, user)).rejects.toThrow(
+      NotFoundException,
+    );
+
+    expect(mockGamesRepository.findFinishedGame).toHaveBeenCalledWith(
+      user.sub,
+      gameId,
+    );
+    expect(mockCardsService.getGameCards).not.toHaveBeenCalled();
   });
 });
