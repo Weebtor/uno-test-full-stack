@@ -24,11 +24,13 @@ const GameBoard: React.FC<Props> = ({ game, cards }) => {
           {game.status === "finished" && <h2>Felicidades!!</h2>}
         </div>
         <div className="flex justify-end">
-          <Button asChild>
-            <Link to="/app/game/new">
-              <Play /> Jugar otra vez
-            </Link>
-          </Button>
+          {game.status === "finished" && (
+            <Button asChild>
+              <Link to="/app/game/new">
+                <Play /> Jugar otra vez
+              </Link>
+            </Button>
+          )}
         </div>
       </CardHeader>
       <CardContent>

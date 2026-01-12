@@ -1,3 +1,5 @@
+import ContainerBox from "@/components/ui/container-box";
+import StatsTable from "@/features/game/components/stats-table";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(protected)/app/stats/")({
@@ -5,5 +7,9 @@ export const Route = createFileRoute("/(protected)/app/stats/")({
 });
 
 function RouteComponent() {
-  return <div>Hello "/app/stats"!</div>;
+  return (
+    <ContainerBox className="flex flex-1 justify-center items-center">
+      <StatsTable />
+    </ContainerBox>
+  );
 }

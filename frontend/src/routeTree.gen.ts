@@ -19,6 +19,7 @@ import { Route as protectedAppIndexRouteImport } from './routes/(protected)/app/
 import { Route as protectedAppStatsIndexRouteImport } from './routes/(protected)/app/stats/index'
 import { Route as protectedAppGameIndexRouteImport } from './routes/(protected)/app/game/index'
 import { Route as protectedAppGameNewRouteImport } from './routes/(protected)/app/game/new'
+import { Route as protectedAppGameIdRouteImport } from './routes/(protected)/app/game/$id'
 
 const protectedRouteRoute = protectedRouteRouteImport.update({
   id: '/(protected)',
@@ -68,6 +69,11 @@ const protectedAppGameNewRoute = protectedAppGameNewRouteImport.update({
   path: '/game/new',
   getParentRoute: () => protectedAppRouteRoute,
 } as any)
+const protectedAppGameIdRoute = protectedAppGameIdRouteImport.update({
+  id: '/game/$id',
+  path: '/game/$id',
+  getParentRoute: () => protectedAppRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -75,6 +81,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof guestLoginRoute
   '/register': typeof guestRegisterRoute
   '/app/': typeof protectedAppIndexRoute
+  '/app/game/$id': typeof protectedAppGameIdRoute
   '/app/game/new': typeof protectedAppGameNewRoute
   '/app/game': typeof protectedAppGameIndexRoute
   '/app/stats': typeof protectedAppStatsIndexRoute
@@ -84,6 +91,7 @@ export interface FileRoutesByTo {
   '/login': typeof guestLoginRoute
   '/register': typeof guestRegisterRoute
   '/app': typeof protectedAppIndexRoute
+  '/app/game/$id': typeof protectedAppGameIdRoute
   '/app/game/new': typeof protectedAppGameNewRoute
   '/app/game': typeof protectedAppGameIndexRoute
   '/app/stats': typeof protectedAppStatsIndexRoute
@@ -97,6 +105,7 @@ export interface FileRoutesById {
   '/(guest)/login': typeof guestLoginRoute
   '/(guest)/register': typeof guestRegisterRoute
   '/(protected)/app/': typeof protectedAppIndexRoute
+  '/(protected)/app/game/$id': typeof protectedAppGameIdRoute
   '/(protected)/app/game/new': typeof protectedAppGameNewRoute
   '/(protected)/app/game/': typeof protectedAppGameIndexRoute
   '/(protected)/app/stats/': typeof protectedAppStatsIndexRoute
@@ -109,6 +118,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/app/'
+    | '/app/game/$id'
     | '/app/game/new'
     | '/app/game'
     | '/app/stats'
@@ -118,6 +128,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/app'
+    | '/app/game/$id'
     | '/app/game/new'
     | '/app/game'
     | '/app/stats'
@@ -130,6 +141,7 @@ export interface FileRouteTypes {
     | '/(guest)/login'
     | '/(guest)/register'
     | '/(protected)/app/'
+    | '/(protected)/app/game/$id'
     | '/(protected)/app/game/new'
     | '/(protected)/app/game/'
     | '/(protected)/app/stats/'
@@ -213,6 +225,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof protectedAppGameNewRouteImport
       parentRoute: typeof protectedAppRouteRoute
     }
+    '/(protected)/app/game/$id': {
+      id: '/(protected)/app/game/$id'
+      path: '/game/$id'
+      fullPath: '/app/game/$id'
+      preLoaderRoute: typeof protectedAppGameIdRouteImport
+      parentRoute: typeof protectedAppRouteRoute
+    }
   }
 }
 
@@ -232,6 +251,7 @@ const guestRouteRouteWithChildren = guestRouteRoute._addFileChildren(
 
 interface protectedAppRouteRouteChildren {
   protectedAppIndexRoute: typeof protectedAppIndexRoute
+  protectedAppGameIdRoute: typeof protectedAppGameIdRoute
   protectedAppGameNewRoute: typeof protectedAppGameNewRoute
   protectedAppGameIndexRoute: typeof protectedAppGameIndexRoute
   protectedAppStatsIndexRoute: typeof protectedAppStatsIndexRoute
@@ -239,6 +259,7 @@ interface protectedAppRouteRouteChildren {
 
 const protectedAppRouteRouteChildren: protectedAppRouteRouteChildren = {
   protectedAppIndexRoute: protectedAppIndexRoute,
+  protectedAppGameIdRoute: protectedAppGameIdRoute,
   protectedAppGameNewRoute: protectedAppGameNewRoute,
   protectedAppGameIndexRoute: protectedAppGameIndexRoute,
   protectedAppStatsIndexRoute: protectedAppStatsIndexRoute,
