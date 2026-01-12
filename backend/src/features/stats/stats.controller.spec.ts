@@ -4,21 +4,17 @@ import { StatsService } from './stats.service';
 import { CurrentUser } from '../auth/strategies/jwt.strategy';
 
 describe('StatsController', () => {
-  let statsController: StatsController;
-  let statsService: StatsService;
+  let controller: StatsController;
+  let service: StatsService;
 
   const mockStatsService = {
     getPastResults: jest.fn(),
+    getGameResult: jest.fn(),
   };
 
-  const fakeUser = {
+  const mockUser: CurrentUser = {
     sub: 'user-123',
   } as CurrentUser;
-
-  const fakeResults = [
-    { id: 'game1', moves: 10, errors: 2, status: 'finished' },
-    { id: 'game2', moves: 8, errors: 0, status: 'finished' },
-  ];
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -31,22 +27,40 @@ describe('StatsController', () => {
       ],
     }).compile();
 
-    statsController = module.get<StatsController>(StatsController);
-    statsService = module.get<StatsService>(StatsService);
+    controller = module.get<StatsController>(StatsController);
+    service = module.get<StatsService>(StatsService);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   it('should be defined', () => {
-    expect(statsController).toBeDefined();
+    expect(controller).toBeDefined();
   });
 
   describe('getPastResults', () => {
-    it('should call statsService.getPastResults with the user and return results', async () => {
-      mockStatsService.getPastResults.mockResolvedValue(fakeResults);
+    it('should call statsService.getPastResults with current user', async () => {
+      const expectedResult = [{ id: 'game-1' }];
+      mockStatsService.getPastResults.mockResolvedValue(expectedResult);
 
-      const result = await statsController.getPastResults(fakeUser);
+      const result = await controller.getPastResults(mockUser);
 
-      expect(statsService.getPastResults).toHaveBeenCalledWith(fakeUser);
-      expect(result).toEqual(fakeResults);
+      expect(service.getPastResults).toHaveBeenCalledWith(mockUser);
+      expect(result).toEqual(expectedResult);
+    });
+  });
+
+  describe('getGameResult', () => {
+    it('should call statsService.getGameResult with game id and current user', async () => {
+      const gameId = 'game-123';
+      const expectedResult = { id: gameId, status: 'finished' };
+      mockStatsService.getGameResult.mockResolvedValue(expectedResult);
+
+      const result = await controller.getGameResult(gameId, mockUser);
+
+      expect(service.getGameResult).toHaveBeenCalledWith(gameId, mockUser);
+      expect(result).toEqual(expectedResult);
     });
   });
 });

@@ -169,7 +169,7 @@ export class GameService {
   }
 
   async getGameResult(gameId: string, user: CurrentUser) {
-    this.db.transaction(async (tx) => {
+    return this.db.transaction(async (tx) => {
       const [game] = await this.gamesRepository.findFinishedGame(
         user.sub,
         gameId,
