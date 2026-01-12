@@ -1,33 +1,34 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { StatsController } from './stats.controller';
 import { StatsService } from './stats.service';
+import { GameService } from '../game/game.service';
 import { CurrentUser } from '../auth/strategies/jwt.strategy';
 
-describe('StatsController', () => {
-  let controller: StatsController;
+describe('StatsService', () => {
   let service: StatsService;
+  let gameService: GameService;
 
-  const mockStatsService = {
+  const mockGameService = {
     getPastResults: jest.fn(),
+    getGameResult: jest.fn(),
   };
 
-  const fakeUser: CurrentUser = {
+  const mockUser: CurrentUser = {
     sub: 'user-123',
   } as CurrentUser;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [StatsController],
       providers: [
+        StatsService,
         {
-          provide: StatsService,
-          useValue: mockStatsService,
+          provide: GameService,
+          useValue: mockGameService,
         },
       ],
     }).compile();
 
-    controller = module.get<StatsController>(StatsController);
     service = module.get<StatsService>(StatsService);
+    gameService = module.get<GameService>(GameService);
   });
 
   afterEach(() => {
@@ -35,23 +36,31 @@ describe('StatsController', () => {
   });
 
   it('should be defined', () => {
-    expect(controller).toBeDefined();
+    expect(service).toBeDefined();
   });
 
   describe('getPastResults', () => {
-    it('should call statsService.getPastResults with current user', async () => {
-      const fakeResult = [
-        { id: 'game-1', moves: 10, errors: 2 },
-        { id: 'game-2', moves: 8, errors: 1 },
-      ];
+    it('should call gameService.getPastResults with user', async () => {
+      const expectedResult = [{ id: 'game-1' }];
+      mockGameService.getPastResults.mockResolvedValue(expectedResult);
 
-      mockStatsService.getPastResults.mockResolvedValue(fakeResult);
+      const result = await service.getPastResults(mockUser);
 
-      const result = await controller.getPastResults(fakeUser);
+      expect(gameService.getPastResults).toHaveBeenCalledWith(mockUser);
+      expect(result).toEqual(expectedResult);
+    });
+  });
 
-      expect(service.getPastResults).toHaveBeenCalledTimes(1);
-      expect(service.getPastResults).toHaveBeenCalledWith(fakeUser);
-      expect(result).toEqual(fakeResult);
+  describe('getGameResult', () => {
+    it('should call gameService.getGameResult with gameId and user', async () => {
+      const gameId = 'game-123';
+      const expectedResult = { id: gameId, status: 'finished' };
+      mockGameService.getGameResult.mockResolvedValue(expectedResult);
+
+      const result = await service.getGameResult(gameId, mockUser);
+
+      expect(gameService.getGameResult).toHaveBeenCalledWith(gameId, mockUser);
+      expect(result).toEqual(expectedResult);
     });
   });
 });
