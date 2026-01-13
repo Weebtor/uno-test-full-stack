@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useCreateNewGame } from "../hooks/use-create-new-game";
 import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
