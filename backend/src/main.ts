@@ -21,7 +21,7 @@ async function bootstrap() {
     });
   } else {
     app.enableCors({
-      origin: ['https://mi-frontend.com'],
+      origin: ['https://mi-frontend.com', 'http://localhost:5173'],
       credentials: true,
     });
   }
