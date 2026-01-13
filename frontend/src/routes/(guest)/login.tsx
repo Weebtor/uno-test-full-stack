@@ -9,7 +9,7 @@ function RouteComponent() {
   return (
     <>
       <div className="h-screen flex items-center justify-center">
-        <LoginCardForm registerUrl="/register" />
+        <LoginCardForm />
       </div>
     </>
   );

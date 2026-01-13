@@ -15,7 +15,6 @@ import { Link } from "@tanstack/react-router";
 import { Form } from "@/components/ui/form";
 import { useLogin } from "../hooks/use-login";
 import { InputForm } from "@/components/forms";
-import type { ToUrlString } from "@/types";
 
 const loginSchema = yup.object({
   rut: yup.string().required("Rut valido requerido."),
@@ -23,11 +22,7 @@ const loginSchema = yup.object({
 
 type LoginFormData = yup.InferType<typeof loginSchema>;
 
-interface LoginCardProps {
-  registerUrl: ToUrlString;
-}
-
-const LoginCardForm: React.FC<LoginCardProps> = ({ registerUrl }) => {
+const LoginCardForm = () => {
   const { mutate: login, isPending } = useLogin();
 
   const form = useForm<LoginFormData>({
@@ -68,7 +63,7 @@ const LoginCardForm: React.FC<LoginCardProps> = ({ registerUrl }) => {
 
             <p className="text-center text-sm text-gray-600">
               ¿No tienes una cuenta?{" "}
-              <Link to={registerUrl} className="text-primary hover:underline">
+              <Link to="/register" className="text-primary hover:underline">
                 Regístrate
               </Link>
             </p>
