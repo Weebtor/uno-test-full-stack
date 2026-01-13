@@ -1,5 +1,5 @@
 import ContainerBox from "@/components/ui/container-box";
-import StatsTable from "@/features/game/components/stats-table";
+import StatsTable from "@/features/stats/components/stats-table";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(protected)/app/stats/")({

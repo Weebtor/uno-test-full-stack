@@ -1,11 +1,11 @@
 import { useMemo } from "react";
-import useGetStats from "../hooks/use-get-stats";
 import DataTable from "@/components/data-table";
 import type { ColumnDef } from "@tanstack/react-table";
-import type { GameModel } from "../types/game.types";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "@tanstack/react-router";
+import useGetStats from "../hooks/use-get-stats";
+import type { GameModel } from "@/features/game/types/game.types";
 
 const StatsTable = () => {
   const { data, isLoading } = useGetStats();
