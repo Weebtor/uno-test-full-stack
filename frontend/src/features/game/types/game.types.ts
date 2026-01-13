@@ -1,3 +1,5 @@
+import type { PublicCardModel } from "./card.types";
+
 export type GameModel = {
   id: string;
   totalCards: number;
@@ -7,3 +9,7 @@ export type GameModel = {
   createdAt: Date;
   userId: string;
 };
+export interface GameBoard {
+  game: GameModel;
+  cards: PublicCardModel[];
+}

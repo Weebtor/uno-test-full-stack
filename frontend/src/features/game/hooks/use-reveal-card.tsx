@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import type { PublicCardModel } from "../types/card.types";
 import type { GameModel } from "../types/game.types";
 import { queryClient } from "@/common/providers/query-client";
-import type { ActiveGame } from "./use-get-active-game";
+import type { GameBoard } from "../types/game.types";
 
 interface Response {
   cards: PublicCardModel[];
@@ -18,7 +18,7 @@ export const useRevealCard = (cardId: string) => {
         .then((res) => res.data);
     },
     onSuccess: (data) => {
-      queryClient.setQueryData(["get-current-game"], (prev: ActiveGame) => {
+      queryClient.setQueryData(["get-current-game"], (prev: GameBoard) => {
         const activeGameCopy = { ...prev };
         activeGameCopy.game = data.game;
         activeGameCopy.cards = activeGameCopy.cards.map((item) => {

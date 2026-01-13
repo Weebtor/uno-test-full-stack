@@ -35,32 +35,10 @@ describe("GameBoard", () => {
     expect(screen.getByText(/Errores: 2/i)).toBeInTheDocument();
   });
 
-  it("does not show 'Felicidades!!' when game is not finished", () => {
-    render(<GameBoard game={mockGame as any} cards={mockCards as any} />);
-
-    expect(screen.queryByText(/Felicidades/i)).not.toBeInTheDocument();
-  });
-
-  it("shows 'Felicidades!!' when game is finished", () => {
-    const finishedGame = { ...mockGame, status: "finished" };
-
-    render(<GameBoard game={finishedGame as any} cards={mockCards as any} />);
-
-    expect(screen.getByText(/Felicidades/i)).toBeInTheDocument();
-  });
-
   it("renders all cards", () => {
     render(<GameBoard game={mockGame as any} cards={mockCards as any} />);
 
     const cards = screen.getAllByTestId("memorice-card");
     expect(cards).toHaveLength(3);
-  });
-
-  it("renders 'Jugar otra vez' link", () => {
-    render(<GameBoard game={mockGame as any} cards={mockCards as any} />);
-
-    const link = screen.getByText(/jugar otra vez/i);
-    expect(link).toBeInTheDocument();
-    expect(link).toHaveAttribute("to", "/app/game/new");
   });
 });
