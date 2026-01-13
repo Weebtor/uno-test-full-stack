@@ -1,6 +1,6 @@
 import { queryClient } from "@/common/providers/query-client";
 import ContainerBox from "@/components/ui/container-box";
-import CreateNewGame from "@/features/game/components/new-game-button";
+import CreateNewGame from "@/features/game/components/create-new-game";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
 

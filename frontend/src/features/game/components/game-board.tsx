@@ -16,6 +16,9 @@ const GameBoard: React.FC<Props> = ({ game, cards }) => {
         <div className="">
           <h2 className="text-blue-500">Movimientos: {game.moves}</h2>
           <h2 className="text-red-500">Errores: {game.errors}</h2>
+          <h2 className="text-green-300">
+            Aciertos: {game.moves - game.errors}
+          </h2>
         </div>
       </CardHeader>
       <CardContent>
