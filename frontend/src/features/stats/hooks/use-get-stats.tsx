@@ -1,6 +1,6 @@
 import apiClient from "@/common/config/api/api-client.config";
 import { useQuery } from "@tanstack/react-query";
-import { type GameModel } from "../types/game.types";
+import { type GameModel } from "../../game/types/game.types";
 
 const useGetStats = () => {
   return useQuery({
