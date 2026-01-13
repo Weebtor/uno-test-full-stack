@@ -1,5 +1,4 @@
 import type { PublicCardModel } from "./card.types";
-import type { GameModel } from "./game.types";
 
 export type GameModel = {
   id: string;

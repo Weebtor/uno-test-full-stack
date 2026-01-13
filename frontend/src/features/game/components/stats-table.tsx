@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import useGetStats from "../hooks/use-get-stats";
 import DataTable from "@/components/data-table";
 import type { ColumnDef } from "@tanstack/react-table";

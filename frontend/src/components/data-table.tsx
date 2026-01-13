@@ -25,7 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Spinner } from "./ui/spinner";
 
 export interface ResourcePage<T = any> {
@@ -143,7 +143,7 @@ DataTableProps<TData, TValue>) => {
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id + "_" + row.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
